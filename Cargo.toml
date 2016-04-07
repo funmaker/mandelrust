@@ -1,0 +1,12 @@
+[package]
+name = "mandelrust"
+version = "0.1.0"
+authors = ["Fun Maker <funmaker95@gmail.com>"]
+
+[dependencies]
+time = "*"
+
+[dependencies.sdl2]
+git = "https://github.com/AngryLawyer/rust-sdl2"
+[dependencies.gl]
+git = "https://github.com/bjz/gl-rs"
