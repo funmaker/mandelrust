@@ -3,7 +3,7 @@ use time::*;
 use std::f32::consts::PI as PI;
 use std::sync::{Arc, Barrier, Mutex};
 
-use f8_120mod::*;
+use fixed::*;
 use super::TEXTURE;
 
 pub struct Job {

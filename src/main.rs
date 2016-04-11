@@ -18,8 +18,8 @@ mod gl_utils;
 use gl_utils::*;
 mod worker;
 use worker::*;
-mod f8_120mod;
-use f8_120mod::*;
+mod fixed;
+use fixed::*;
 
 use time::*;
 use sdl2::event::{Event, WindowEventId};

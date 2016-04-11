@@ -597,8 +597,28 @@ fn test_mul(){
 extern crate test;
 use self::test::Bencher;
 
-macro_rules! times100{
+macro_rules! times300{
     ($a:expr) => {{
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
+        $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
         $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
         $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
         $a;$a;$a;$a;$a;$a;$a;$a;$a;$a;
@@ -616,12 +636,12 @@ macro_rules! times100{
 fn bench_mul(bench: &mut Bencher) {
     let a = f8_120::from(0.001234);
     let b = f8_120::from(7.0);
-    bench.iter(|| times100!(a * b));
+    bench.iter(|| times300!(a * b));
 }
 
 #[bench]
 fn bench_add(bench: &mut Bencher) {
     let a = f8_120::from(0.001234);
     let b = f8_120::from(7.0);
-    bench.iter(|| times100!(a + b));
+    bench.iter(|| times300!(a + b));
 }
