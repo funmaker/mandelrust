@@ -12,12 +12,12 @@ pub struct Job {
     row: usize,
     width: usize,
     heigth: usize,
-    scale: f8_120,
+    scale: (f8_120, f8_120),
     center: (f8_120, f8_120),
 }
 
 impl Job {
-    pub fn new(pbo: &'static mut[u8], row: usize, width: usize, heigth: usize, scale: f8_120, center: (f8_120, f8_120)) -> Job{
+    pub fn new(pbo: &'static mut[u8], row: usize, width: usize, heigth: usize, scale: (f8_120, f8_120), center: (f8_120, f8_120)) -> Job{
         Job{
             pbo: pbo,
             row: row,
@@ -66,8 +66,8 @@ impl Worker {
         for row in job.pbo.chunks_mut(4*job.width) {
             for pixel in row.chunks_mut(4) {
                 {
-                    let x = -job.center.0 + x * job.scale;
-                    let y = -job.center.1 + y * job.scale;
+                    let x = -job.center.0 + x * job.scale.0;
+                    let y = -job.center.1 + y * job.scale.1;
                     
                     let i = Self::escape_time(x, y, max);
 

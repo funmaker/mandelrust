@@ -13,6 +13,7 @@ extern crate time;
 use std::sync::{Arc, Barrier, Mutex};
 use std::thread;
 use std::cmp;
+use std::num::Zero;
 
 mod gl_utils;
 use gl_utils::*;
@@ -34,7 +35,7 @@ const VERTEX_DATA: [f32; 8] = [
 const THREADS: usize = 16;
 const JOBS: usize = 128;
 
-/*
+
 const TEXTURE: [u8; 48] = [
 9, 1, 47,
 4, 4, 73,
@@ -53,8 +54,8 @@ const TEXTURE: [u8; 48] = [
 66, 30, 15,
 25, 7, 26,
 ];
-*/
 
+/*
 static TEXTURE: [u8; 36] = [
 255, 0, 0,
 127, 127, 127,
@@ -69,7 +70,7 @@ static TEXTURE: [u8; 36] = [
 255, 0, 255,
 127, 127, 127,
 ];
-
+*/
 
 fn main() {
     let ctx = sdl2::init().unwrap_or_else(|err| panic!("Unable to initialize sdl2: {}", err));
@@ -96,9 +97,9 @@ fn main() {
     let mut last = SteadyTime::now();
     let mut fps = 0;
 
-    let mut window_size: (u32, u32) = window.size();
-    let mut scale: f32 = 1.0;
-    let mut center: (f32, f32) = (0.0, 0.0);
+    let mut window_size = window.size();
+    let mut scale = (f8_120::from(1.5), f8_120::from(1.5) * f8_120::from(window_size.1 as f32 / window_size.0 as f32));
+    let mut center = (f8_120::from(0.5), f8_120::from(0.0));
 
     let mut buffers = generate_buffers(window_size);
     let _tex = generate_texture(window_size);
@@ -124,13 +125,15 @@ fn main() {
                     gl::Viewport(0,0,x,y);
                     rescale_buffers(window_size, buffers);
                     rescale_texture(window_size);
+                    scale.1 = scale.0 * f8_120::from(window_size.1 as f32 / window_size.0 as f32);
                 },
                 Event::MouseWheel{ x, y, ..} => {
-                    scale *=  1.0 - ( x + y ) as f32 * 0.2;
+                    scale.0 = scale.0 * f8_120::from(1.0 - ( x + y ) as f32 * 0.2);
+                    scale.1 = scale.0 * f8_120::from(window_size.1 as f32 / window_size.0 as f32);
                 },
                 Event::MouseMotion{ mousestate, xrel, yrel, ..} if mousestate.left() => {
-                    center.0 += xrel as f32 / window_size.0 as f32 * scale * 2.0;
-                    center.1 -= yrel as f32 / window_size.0 as f32 * scale * 2.0;
+                    center.0 = center.0 + f8_120::from(xrel as f32 / window_size.0 as f32 * 2.0) * scale.0;
+                    center.1 = center.1 - f8_120::from(yrel as f32 / window_size.0 as f32 * 2.0) * scale.1;
                 },
                 _   => continue
             }
@@ -158,8 +161,8 @@ fn main() {
                         row,
                         window_size.0,
                         window_size.1,
-                        f8_120::from(scale),
-                        (f8_120::from(center.0), f8_120::from(center.1)),
+                        scale,
+                        center,
                     ));
                     row += job_heigth;
                 }
